@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>评价指标 - 仿真平台配置</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* 颜色变量 - 严格按照设计稿 */
+            --color-azure-13: #071f3d;
+            --color-azure-13-80: rgba(7, 31, 61, 0.8);
+            --color-azure-54: #1677FF;
+            --color-white: #FFFFFF;
+            --color-grey-94: #F0F0F0;
+            --color-grey-95: #E6F4FF;
+            --color-grey-96: #F5F5F5;
+            --color-grey-98: #FAFAFA;
+            --color-black-88: rgba(0, 0, 0, 0.88);
+            --color-black-45: rgba(0, 0, 0, 0.45);
+            --color-black-25: rgba(0, 0, 0, 0.25);
+            --color-black-6: rgba(5, 5, 5, 0.06);
+            --color-black-2: rgba(0, 0, 0, 0.02);
+            --color-green-44: #52C41A;
+            --color-green-light: #F6FFED;
+            --color-yellow-44: #FAAD14;
+            --color-yellow-light: #FFFBE6;
+            --color-grey-85: #D9D9D9;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 14px;
+            color: var(--color-black-88);
+            background: var(--color-grey-96);
+            overflow: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(90deg, var(--color-grey-96) 0%, var(--color-grey-96) 100%),
+                        linear-gradient(90deg, var(--color-white) 0%, var(--color-white) 100%);
+        }
+
+        /* ==================== Header ==================== */
+        .header {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 8.4vh;
+            min-height: 56px;
+            background: linear-gradient(180deg, var(--color-azure-13) 0%, var(--color-azure-13-80) 100%);
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo {
+            position: absolute;
+            left: 1.1vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5.8vw;
+            max-width: 85px;
+            height: auto;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title {
+            position: absolute;
+            left: 8vw;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 1.1vw;
+            min-size: 16px;
+            font-weight: 400;
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .header-release-note {
+            position: absolute;
+            right: 10vw;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .header-release-note svg {
+            width: 1.1vw;
+            min-width: 16px;
+            height: 1.1vw;
+            min-height: 16px;
+        }
+
+        .header-release-note span {
+            margin-left: 1.1vw;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1vw;
+            min-size: 16px;
+            font-weight: 400;
+            color: var(--color-azure-54);
+        }
+
+        .header-user {
+            position: absolute;
+            right: 4vw;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 1.1vw;
+            min-size: 16px;
+            font-weight: 400;
+            color: var(--color-white);
+        }
+
+        .header-dropdown {
+            position: absolute;
+            right: 2vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.1vw;
+            min-width: 16px;
+            height: 1.1vw;
+            min-height: 16px;
+        }
+
+        .header-dropdown img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ==================== Background ==================== */
+        .background {
+            position: absolute;
+            left: 0;
+            top: 8.4vh;
+            min-top: 56px;
+            width: 100%;
+            height: calc(100% - 8.4vh);
+            min-height: calc(100% - 56px);
+        }
+
+        /* ==================== Aside ==================== */
+        .aside {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 13.6vw;
+            max-width: 200px;
+            height: 100%;
+            background: var(--color-grey-94);
+        }
+
+        .menu-container {
+            position: absolute;
+            left: 0;
+            top: 1.3vh;
+            width: 100%;
+            height: calc(100% - 1.3vh - 10vh);
+            background: var(--color-white);
+            border-right: 1px solid var(--color-black-6);
+        }
+
+        .menu-item {
+            position: absolute;
+            left: 0.3vw;
+            width: calc(100% - 0.6vw);
+            height: 6vh;
+            min-height: 40px;
+            border-radius: 0.5vw;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .menu-item:hover {
+            background: var(--color-black-2);
+        }
+
+        .menu-item-icon {
+            position: absolute;
+            left: 1.6vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0.95vw;
+            min-width: 14px;
+            height: 0.95vw;
+            min-height: 14px;
+        }
+
+        .menu-item-icon img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .menu-item-text {
+            position: absolute;
+            left: 3.3vw;
+            height: 6vh;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95vw;
+            min-size: 14px;
+            color: var(--color-black-88);
+        }
+
+        .menu-item-expand {
+            position: absolute;
+            right: 1.1vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0.8vw;
+            min-width: 12px;
+            height: 0.8vw;
+            min-height: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-item-expand::before,
+        .menu-item-expand::after {
+            content: '';
+            position: absolute;
+            width: 0.4vw;
+            min-width: 6px;
+            height: 0.1vw;
+            min-height: 1.5px;
+            background: var(--color-black-88);
+            border-radius: 6px;
+        }
+
+        .menu-item-expand::before {
+            transform: rotate(-45deg);
+        }
+
+        .menu-item-expand::after {
+            transform: rotate(45deg);
+        }
+
+        .menu-item-expand.expanded::before {
+            transform: rotate(45deg);
+        }
+
+        .menu-item-expand.expanded::after {
+            transform: rotate(-45deg);
+        }
+
+        .menu-item-expand.blue::before,
+        .menu-item-expand.blue::after {
+            background: var(--color-azure-54);
+        }
+
+        .badge {
+            position: absolute;
+            right: 1.1vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0.4vw;
+            min-width: 6px;
+            height: 0.4vw;
+            min-height: 6px;
+            background: var(--color-green-44);
+            border-radius: 3px;
+        }
+
+        /* 子菜单区域 */
+        .submenu-container {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background: var(--color-black-2);
+        }
+
+        .submenu-item {
+            position: absolute;
+            left: 0.3vw;
+            width: calc(100% - 0.6vw);
+            height: 6vh;
+            min-height: 40px;
+            border-radius: 0.5vw;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .submenu-item-text {
+            position: absolute;
+            left: 3.3vw;
+            height: 6vh;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95vw;
+            min-size: 14px;
+        }
+
+        .submenu-item.active {
+            background: var(--color-grey-95);
+        }
+
+        .submenu-item.active .submenu-item-text {
+            color: var(--color-azure-54);
+        }
+
+        /* 折叠按钮 */
+        .collapse-btn {
+            position: absolute;
+            left: 8.5vw;
+            bottom: 1.5vh;
+            width: 4.3vw;
+            height: 4.3vw;
+            min-width: 64px;
+            min-height: 64px;
+            border: 1px solid transparent;
+            border-radius: 0.4vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .collapse-btn:hover {
+            border-color: var(--color-black-25);
+        }
+
+        .collapse-btn svg {
+            width: 1.1vw;
+            min-width: 16px;
+            height: 1.1vw;
+            min-height: 16px;
+        }
+
+        /* ==================== Main ==================== */
+        .main {
+            position: absolute;
+            left: 13.6vw;
+            max-left: 200px;
+            top: 0;
+            width: calc(100% - 13.6vw);
+            max-width: calc(100% - 200px);
+            height: 100%;
+        }
+
+        /* 面包屑 */
+        .breadcrumb {
+            position: absolute;
+            left: 1.4vw;
+            top: 3vh;
+            height: 3.3vh;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .breadcrumb-item {
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            line-height: 3.3vh;
+        }
+
+        .breadcrumb-item:first-child {
+            color: var(--color-black-45);
+        }
+
+        .breadcrumb-separator {
+            font-family: 'Roboto', sans-serif;
+            font-size: 13.3px;
+            color: var(--color-black-45);
+            margin: 0 0.68px;
+        }
+
+        .breadcrumb-item:last-child {
+            color: var(--color-black-88);
+        }
+
+        /* ==================== 搜索栏区域 ==================== */
+        .search-bar {
+            position: absolute;
+            left: 1.4vw;
+            top: 8.7vh;
+            width: calc(100% - 2.8vw);
+            height: 8.4vh;
+            min-height: 56px;
+            background: var(--color-white);
+            border-radius: 0.5vw 0.5vw 0 0;
+            display: flex;
+            align-items: center;
+            padding: 0 1.4vw;
+            gap: 1.1vw;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5vw;
+        }
+
+        .filter-label {
+            font-size: 0.95vw;
+            min-size: 14px;
+            color: var(--color-black-88);
+            white-space: nowrap;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            width: 19vw;
+            height: 4.8vh;
+            min-height: 32px;
+        }
+
+        .search-input-wrapper.small {
+            width: 13.6vw;
+        }
+
+        .search-input-wrapper svg {
+            position: absolute;
+            left: 0.8vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0.95vw;
+            min-width: 14px;
+            height: 0.95vw;
+            min-height: 14px;
+            color: var(--color-black-45);
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 100%;
+            padding: 0 0.8vw 0 2.7vw;
+            border: 1px solid var(--color-grey-85);
+            border-radius: 0.4vw;
+            font-size: 0.95vw;
+            min-size: 14px;
+            font-family: 'PingFang SC', sans-serif;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--color-azure-54);
+        }
+
+        .search-input::placeholder {
+            color: var(--color-black-45);
+        }
+
+        /* ==================== 表格容器 ==================== */
+        .table-container {
+            position: absolute;
+            left: 1.4vw;
+            top: 17.1vh;
+            width: calc(100% - 2.8vw);
+            height: calc(100% - 17.1vh - 4.8vh);
+            background: var(--color-white);
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        .table-wrapper {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        /* 表头 */
+        .table-header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 8.2vh;
+            min-height: 55px;
+            display: flex;
+            background: var(--color-grey-98);
+            z-index: 10;
+        }
+
+        .table-header-cell {
+            height: 8.2vh;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            padding-left: 1.1vw;
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            font-weight: 600;
+            color: var(--color-black-88);
+            border-bottom: 1px solid var(--color-grey-94);
+            border-right: 1px solid var(--color-grey-94);
+            flex-shrink: 0;
+        }
+
+        .table-header-cell:last-child {
+            border-right: none;
+        }
+
+        /* 列宽设置 - 使用百分比 */
+        .col-name { width: 8%; }
+        .col-desc { width: 18%; }
+        .col-business { width: 6%; }
+        .col-type { width: 6%; }
+        .col-status { width: 6%; }
+        .col-accuracy { width: 8%; }
+        .col-recall { width: 8%; }
+        .col-mirror { width: 8%; }
+        .col-time { width: 9%; }
+        .col-owner { width: 7%; }
+        .col-requester { width: 7%; }
+        .col-actions { width: 6%; }
+
+        /* 表体 */
+        .table-body {
+            width: 100%;
+        }
+
+        .table-row {
+            display: flex;
+            width: 100%;
+            border-bottom: 1px solid var(--color-grey-94);
+            transition: background 0.2s;
+        }
+
+        .table-row:hover {
+            background: var(--color-black-2);
+        }
+
+        .table-cell {
+            display: flex;
+            align-items: center;
+            padding: 1.1vw;
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            color: var(--color-black-88);
+            line-height: 3.3vh;
+            border-right: 1px solid var(--color-grey-94);
+            flex-shrink: 0;
+        }
+
+        .table-cell:last-child {
+            border-right: none;
+        }
+
+        /* 列宽设置 - 数据单元格 */
+        .cell-name { width: 8%; }
+        .cell-desc { width: 18%; }
+        .cell-business { width: 6%; }
+        .cell-type { width: 6%; }
+        .cell-status { width: 6%; }
+        .cell-accuracy { width: 8%; }
+        .cell-recall { width: 8%; }
+        .cell-mirror { width: 8%; }
+        .cell-time { width: 9%; }
+        .cell-owner { width: 7%; }
+        .cell-requester { width: 7%; }
+        .cell-actions { width: 6%; }
+
+        /* 隐藏列 */
+        .hidden {
+            display: none !important;
+        }
+
+        /* 操作按钮 */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4vw;
+            width: 100%;
+        }
+
+        .action-btn {
+            padding: 0;
+            border: none;
+            background: transparent;
+            font-size: 0.85vw;
+            min-size: 12px;
+            font-family: 'PingFang SC', sans-serif;
+            cursor: pointer;
+            transition: color 0.2s;
+            white-space: nowrap;
+            text-align: left;
+        }
+
+        .action-btn.report {
+            color: var(--color-azure-54);
+        }
+
+        .action-btn.report:hover {
+            text-decoration: underline;
+        }
+
+        .action-btn.history {
+            color: var(--color-azure-54);
+        }
+
+        .action-btn.history:hover {
+            text-decoration: underline;
+        }
+
+        /* 业务类型标签 */
+        .business-tag {
+            font-size: 0.95vw;
+            min-size: 14px;
+            color: var(--color-black-88);
+        }
+
+        /* 状态标签 */
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-tag.published {
+            background: var(--color-green-light);
+            color: var(--color-green-44);
+            border: 1px solid var(--color-green-44);
+        }
+
+        .status-tag.fixing {
+            background: var(--color-yellow-light);
+            color: var(--color-yellow-44);
+            border: 1px solid var(--color-yellow-44);
+        }
+
+        /* 百分比样式 */
+        .percentage {
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+        }
+
+        .percentage .numerator {
+            font-weight: 600;
+        }
+
+        .percentage .numerator.clickable {
+            color: var(--color-azure-54);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .percentage .numerator.clickable:hover {
+            text-decoration: underline;
+        }
+
+        .percentage .denominator {
+            color: var(--color-black-45);
+        }
+
+        .percentage.na {
+            color: var(--color-black-45);
+            font-style: italic;
+        }
+
+        /* 分页器 */
+        .pagination {
+            position: absolute;
+            left: 1.4vw;
+            bottom: 3vh;
+            width: calc(100% - 2.8vw);
+            height: 4.8vh;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.5vw;
+        }
+
+        .pagination-item {
+            width: 2.2vw;
+            min-width: 32px;
+            height: 2.2vw;
+            min-height: 32px;
+            border-radius: 0.4vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pagination-item button {
+            width: 2vw;
+            min-width: 30px;
+            height: 2vw;
+            min-height: 30px;
+            border: 1px solid transparent;
+            border-radius: 0.4vw;
+            background: var(--color-white);
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-black-88);
+            transition: all 0.2s;
+        }
+
+        .pagination-item button:hover {
+            border-color: var(--color-azure-54);
+        }
+
+        .pagination-item.active button {
+            border-color: var(--color-azure-54);
+            color: var(--color-azure-54);
+            font-weight: 600;
+        }
+
+        .pagination-ellipsis {
+            width: 2.2vw;
+            min-width: 32px;
+            height: 2.2vw;
+            min-height: 32px;
+            border-radius: 0.4vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: default;
+        }
+
+        .pagination-ellipsis span {
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            letter-spacing: 0.13vw;
+            color: var(--color-black-25);
+        }
+
+        .page-size-selector {
+            width: 6.8vw;
+            min-width: 100px;
+            height: 2.2vw;
+            min-height: 32px;
+            border: 1px solid var(--color-grey-85);
+            border-radius: 0.4vw;
+            background: var(--color-white);
+            display: flex;
+            align-items: center;
+            padding: 0 0.8vw;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .page-size-selector span {
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.93vw;
+            min-size: 13.9px;
+            color: var(--color-black-88);
+            flex: 1;
+        }
+
+        /* 图标 SVG 内联 */
+        .icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--color-black-45);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* ==================== Modal (上报问题弹窗) ==================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-black-45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-container {
+            width: 36vw;
+            min-width: 480px;
+            background: var(--color-white);
+            border-radius: 0.5vw;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.2s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.1vw 1.4vw;
+            border-bottom: 1px solid var(--color-grey-94);
+        }
+
+        .modal-title {
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 1.1vw;
+            min-size: 16px;
+            font-weight: 600;
+            color: var(--color-black-88);
+        }
+
+        .modal-close {
+            width: 1.1vw;
+            min-width: 16px;
+            height: 1.1vw;
+            min-height: 16px;
+            cursor: pointer;
+            color: var(--color-black-45);
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: var(--color-black-88);
+        }
+
+        .modal-body {
+            padding: 1.4vw;
+        }
+
+        .form-group {
+            margin-bottom: 1.1vw;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            color: var(--color-black-88);
+            margin-bottom: 0.5vw;
+        }
+
+        .form-label.required::before {
+            content: '*';
+            color: #ff4d4f;
+            margin-right: 4px;
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 8vh;
+            padding: 0.8vw;
+            border: 1px solid var(--color-grey-85);
+            border-radius: 0.4vw;
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-textarea:focus {
+            border-color: var(--color-azure-54);
+        }
+
+        .form-textarea::placeholder {
+            color: var(--color-black-45);
+        }
+
+        .form-input {
+            width: 100%;
+            height: 4.8vh;
+            min-height: 32px;
+            padding: 0 0.8vw;
+            border: 1px solid var(--color-grey-85);
+            border-radius: 0.4vw;
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--color-azure-54);
+        }
+
+        .form-input::placeholder {
+            color: var(--color-black-45);
+        }
+
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.8vw;
+            padding: 1.1vw 1.4vw;
+            border-top: 1px solid var(--color-grey-94);
+        }
+
+        .modal-btn {
+            padding: 0.5vw 1.1vw;
+            height: 4.8vh;
+            min-height: 32px;
+            border-radius: 0.4vw;
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-btn-cancel {
+            border: 1px solid var(--color-grey-85);
+            background: var(--color-white);
+            color: var(--color-black-88);
+        }
+
+        .modal-btn-cancel:hover {
+            border-color: var(--color-azure-54);
+            color: var(--color-azure-54);
+        }
+
+        .modal-btn-confirm {
+            border: 1px solid var(--color-azure-54);
+            background: var(--color-azure-54);
+            color: var(--color-white);
+        }
+
+        .modal-btn-confirm:hover {
+            background: #0958d9;
+            border-color: #0958d9;
+        }
+
+        .metric-name-display {
+            font-size: 0.9vw;
+            min-size: 13px;
+            color: var(--color-black-45);
+            margin-top: 0.3vw;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-logo">
+                <svg viewBox="0 0 85 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="85" height="28" rx="4" fill="#1677FF"/>
+                    <text x="10" y="20" font-family="PingFang SC" font-size="14" font-weight="600" fill="white">PGSIM</text>
+                </svg>
+            </div>
+            <div class="header-title">仿真平台</div>
+            <div class="header-release-note">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 2C6.34315 2 5 3.34315 5 5V8H4C3.44772 8 3 8.44772 3 9V13C3 13.5523 3.44772 14 4 14H12C12.5523 14 13 13.5523 13 13V9C13 8.44772 12.5523 8 12 8H11V5C11 3.34315 9.65685 2 8 2ZM7 5C7 4.44772 7.44772 4 8 4C8.55228 4 9 4.44772 9 5V8H7V5Z" fill="white"/>
+                </svg>
+                <span>Release Note</span>
+            </div>
+            <div class="header-user">王艺智</div>
+            <div class="header-dropdown">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6L8 10L12 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Background -->
+        <div class="background">
+            <!-- Aside -->
+            <div class="aside">
+                <div class="menu-container">
+                    <!-- 场景编辑器 -->
+                    <div class="menu-item" style="top: 4px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 2H12V12H2V2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 5H9M5 7H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text">场景编辑器</div>
+                    </div>
+
+                    <!-- 场景管理 (有子菜单) -->
+                    <div class="menu-item" style="top: 48px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="4" height="4" stroke="currentColor" stroke-width="1.5"/>
+                                <rect x="8" y="2" width="4" height="4" stroke="currentColor" stroke-width="1.5"/>
+                                <rect x="2" y="8" width="4" height="4" stroke="currentColor" stroke-width="1.5"/>
+                                <rect x="8" y="8" width="4" height="4" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text">场景管理</div>
+                        <div class="menu-item-expand expanded"></div>
+                    </div>
+
+                    <!-- 单机仿真调试 -->
+                    <div class="menu-item" style="top: 92px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 2L7 12M7 12L4 9M7 12L10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text">单机仿真调试</div>
+                        <div class="badge"></div>
+                    </div>
+
+                    <!-- 仿真任务管理 (有子菜单) -->
+                    <div class="menu-item" style="top: 136px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M5 7H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text">仿真任务管理</div>
+                        <div class="menu-item-expand expanded"></div>
+                    </div>
+
+                    <!-- 评测任务管理 (有子菜单) -->
+                    <div class="menu-item" style="top: 180px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 2L9 5H12L10 8L11 11L8 9L5 11L6 8L4 5H7L7 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text">评测任务管理</div>
+                        <div class="menu-item-expand expanded"></div>
+                    </div>
+
+                    <!-- 配置 (有子菜单，当前展开，蓝色) -->
+                    <div class="menu-item" style="top: 224px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="7" cy="7" r="5" stroke="#1677FF" stroke-width="1.5"/>
+                                <path d="M7 4V7L9 9" stroke="#1677FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text" style="color: #1677FF;">配置</div>
+                        <div class="menu-item-expand expanded blue"></div>
+                    </div>
+
+                    <!-- 子菜单容器 -->
+                    <div class="submenu-container" style="top: 268px; height: 268px;">
+                        <!-- 评价指标 (当前选中) -->
+                        <div class="submenu-item active" style="top: 4px;">
+                            <div class="submenu-item-text">评价指标</div>
+                        </div>
+                        <!-- 评测报告模板 -->
+                        <div class="submenu-item" style="top: 48px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">评测报告模板</div>
+                        </div>
+                        <!-- 评测类型配置 -->
+                        <div class="submenu-item" style="top: 92px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">评测类型配置</div>
+                        </div>
+                        <!-- 标签 -->
+                        <div class="submenu-item" style="top: 136px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">标签</div>
+                        </div>
+                        <!-- 地图 -->
+                        <div class="submenu-item" style="top: 180px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">地图</div>
+                        </div>
+                        <!-- 场景分类配置 -->
+                        <div class="submenu-item" style="top: 224px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">场景分类配置</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 折叠按钮 -->
+                <div class="collapse-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4H12V12H4V4Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M6 8H10M8 6V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Main -->
+            <div class="main">
+                <!-- 面包屑 -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">配置</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item">评价指标</span>
+                </div>
+
+                <!-- 搜索栏 -->
+                <div class="search-bar">
+                    <!-- 指标名称筛选 -->
+                    <div class="filter-group">
+                        <span class="filter-label">指标名称:</span>
+                        <div class="search-input-wrapper small">
+                            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M9 9L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                            <input type="text" class="search-input" placeholder="输入指标名称..." id="filterName">
+                        </div>
+                    </div>
+
+                    <!-- 指标描述筛选 -->
+                    <div class="filter-group">
+                        <span class="filter-label">指标描述:</span>
+                        <div class="search-input-wrapper">
+                            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M9 9L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                            <input type="text" class="search-input" placeholder="输入关键词搜索描述..." id="filterDesc">
+                        </div>
+                    </div>
+
+                    <!-- 业务类型筛选 -->
+                    <div class="filter-group">
+                        <span class="filter-label">业务类型:</span>
+                        <div class="search-input-wrapper small">
+                            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M9 9L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                            <input type="text" class="search-input" placeholder="输入业务类型..." id="filterBusinessType">
+                        </div>
+                    </div>
+
+                    <!-- 数值类型筛选 -->
+                    <div class="filter-group">
+                        <span class="filter-label">数值类型:</span>
+                        <div class="search-input-wrapper small">
+                            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M9 9L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                            <input type="text" class="search-input" placeholder="输入数值类型..." id="filterType">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 表格容器 -->
+                <div class="table-container">
+                    <div class="table-wrapper">
+                        <!-- 表头 -->
+                        <div class="table-header">
+                            <div class="table-header-cell col-name" data-col="name">指标名称</div>
+                            <div class="table-header-cell col-desc" data-col="desc">指标描述</div>
+                            <div class="table-header-cell col-business" data-col="business">业务类型</div>
+                            <div class="table-header-cell col-type" data-col="type">数值类型</div>
+                            <div class="table-header-cell col-status" data-col="status">指标状态</div>
+                            <div class="table-header-cell col-accuracy" data-col="accuracy">准确率</div>
+                            <div class="table-header-cell col-recall" data-col="recall">召回率</div>
+                            <div class="table-header-cell col-mirror" data-col="mirror">验证镜像</div>
+                            <div class="table-header-cell col-time" data-col="time">验证时间</div>
+                            <div class="table-header-cell col-owner" data-col="owner">指标owner</div>
+                            <div class="table-header-cell col-requester" data-col="requester">需求方</div>
+                            <div class="table-header-cell col-actions" data-col="actions">操作</div>
+                        </div>
+
+                        <!-- 表体 -->
+                        <div class="table-body" id="tableBody">
+                            <!-- 数据将由 JavaScript 动态生成 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分页器 -->
+                <div class="pagination">
+                    <!-- 上一页 -->
+                    <div class="pagination-item">
+                        <button>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 2L4 6L8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- 页码 1 (当前选中) -->
+                    <div class="pagination-item active">
+                        <button>1</button>
+                    </div>
+                    <!-- 页码 2 -->
+                    <div class="pagination-item">
+                        <button>2</button>
+                    </div>
+                    <!-- 页码 3 -->
+                    <div class="pagination-item">
+                        <button>3</button>
+                    </div>
+                    <!-- 页码 4 -->
+                    <div class="pagination-item">
+                        <button>4</button>
+                    </div>
+                    <!-- 页码 5 -->
+                    <div class="pagination-item">
+                        <button>5</button>
+                    </div>
+                    <!-- 省略号 -->
+                    <div class="pagination-ellipsis">
+                        <span>•••</span>
+                    </div>
+                    <!-- 末页 25 -->
+                    <div class="pagination-item">
+                        <button>25</button>
+                    </div>
+                    <!-- 下一页 -->
+                    <div class="pagination-item">
+                        <button>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 2L8 6L4 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- 页面大小选择器 -->
+                    <div class="page-size-selector">
+                        <span>10 / page</span>
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 上报问题弹窗 -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <span class="modal-title">上报问题</span>
+                <div class="modal-close" id="modalClose">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">指标名称</label>
+                    <div class="metric-name-display" id="modalMetricName">-</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">问题描述</label>
+                    <textarea class="form-textarea" id="problemDescription" placeholder="请输入问题描述..." rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">问题链接</label>
+                    <input type="text" class="form-input" id="problemLink" placeholder="请输入相关链接...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" id="modalCancel">取消</button>
+                <button class="modal-btn modal-btn-confirm" id="modalConfirm">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 数据 ====================
+        const metricsData = [
+            {
+                name: "到达区域（2.0）",
+                desc: "检测自车在行驶过程中，是否到达[object Object]限定的二维多边形区域",
+                status: "published",
+                accuracy: { numerator: 85, denominator: 100 },
+                recall: { numerator: 78, denominator: 100 },
+                businessType: "efficiency",
+                mirror: "v2.3.1",
+                time: "2025-01-15 14:32",
+                owner: "仿真团队",
+                requester: "全部用户",
+                type: "通过型"
+            },
+            {
+                name: "主车碰撞",
+                desc: "判断主车是否发生碰撞：若有一帧距离小于阈值（障碍物：0.15，栅栏：0.3）则失败。障碍物id过滤：（以半角逗号或分号分隔，默认为空，表示校验所有障碍物）",
+                status: "fixing",
+                accuracy: { numerator: 92, denominator: 100 },
+                recall: { numerator: 88, denominator: 100 },
+                businessType: "safety",
+                mirror: "v2.3.0",
+                time: "2025-01-14 09:15",
+                owner: "规控算法",
+                requester: "规控算法",
+                type: "通过型 数值型"
+            },
+            {
+                name: "禁行区域检测",
+                desc: "检测自车在行驶过程中，是否进入[object Object]限定的二维多边形区域。若存在一帧则失败。",
+                status: "published",
+                accuracy: { numerator: 95, denominator: 100 },
+                recall: { numerator: 91, denominator: 100 },
+                businessType: "safety",
+                mirror: "v2.2.8",
+                time: "2025-01-12 16:48",
+                owner: "仿真团队",
+                requester: "测试团队",
+                type: "通过型"
+            },
+            {
+                name: "刹车顿挫检测",
+                desc: "判断行驶过程中是否出现刹车顿挫：纵向加速度小于-0.2的相邻波谷间，时间间隔是否小于5且与其间加加速度最大值之差（峰谷值）是否超过0.6。",
+                status: "published",
+                accuracy: { numerator: 0, denominator: 0 },
+                recall: { numerator: 0, denominator: 0 },
+                businessType: "comfort",
+                mirror: "v2.2.5",
+                time: "2025-01-10 11:22",
+                owner: "规控算法",
+                requester: "全部用户",
+                type: "通过型"
+            },
+            {
+                name: "QA_无效变道",
+                desc: "检测在时间区间内，自车是否有变道行为，如果是，则失败。",
+                status: "fixing",
+                accuracy: { numerator: 78, denominator: 100 },
+                recall: { numerator: 72, denominator: 100 },
+                businessType: "safety",
+                mirror: "v2.2.3",
+                time: "2025-01-08 13:55",
+                owner: "仿真团队",
+                requester: "测试团队",
+                type: "通过型"
+            },
+            {
+                name: "轻度急刹检测（无豁免）",
+                desc: "检测自车在行驶过程中纵向加速度是否小于阈值（-1 m/s^2），纵向加加速度是否小于阈值（-2 m/s^3）",
+                status: "published",
+                accuracy: { numerator: 88, denominator: 100 },
+                recall: { numerator: 85, denominator: 100 },
+                businessType: "comfort",
+                mirror: "v2.2.1",
+                time: "2025-01-05 10:30",
+                owner: "规控算法",
+                requester: "规控算法",
+                type: "通过型"
+            },
+            {
+                name: "QA_连续变道",
+                desc: "检测在时间区间内，是否在变道完成的0.5s内再次变道，如果是，则失败。",
+                status: "published",
+                accuracy: { numerator: 91, denominator: 100 },
+                recall: { numerator: 87, denominator: 100 },
+                businessType: "safety",
+                mirror: "v2.1.9",
+                time: "2025-01-03 15:42",
+                owner: "仿真团队",
+                requester: "全部用户",
+                type: "通过型"
+            },
+            {
+                name: "QA_提速缓慢",
+                desc: "检测在时间区间内，加速度是否达到0.5m/s，如果是，则成功。",
+                status: "fixing",
+                accuracy: { numerator: 0, denominator: 0 },
+                recall: { numerator: 0, denominator: 0 },
+                businessType: "efficiency",
+                mirror: "v2.1.7",
+                time: "2024-12-28 09:18",
+                owner: "规控算法",
+                requester: "规控算法",
+                type: "通过型"
+            },
+            {
+                name: "主车责任碰撞",
+                desc: "判断主车是否发生碰撞且为主责则失败。时间窗口：10；obs类型：-1（-1: 所有类型,-2：仅车辆）",
+                status: "published",
+                accuracy: { numerator: 96, denominator: 100 },
+                recall: { numerator: 94, denominator: 100 },
+                businessType: "safety",
+                mirror: "v2.1.5",
+                time: "2024-12-25 14:20",
+                owner: "仿真团队",
+                requester: "测试团队",
+                type: "通过型 数值型"
+            },
+            {
+                name: "QA_车速稳定性",
+                desc: "检测在时间区间秒内，是否有1s的自车车速不在目标车速0.5kph的1kph的误差范围内，如果是，则失败。（目标车速写-1，代表巡航车速）",
+                status: "published",
+                accuracy: { numerator: 83, denominator: 100 },
+                recall: { numerator: 79, denominator: 100 },
+                businessType: "comfort",
+                mirror: "v2.1.3",
+                time: "2024-12-22 11:05",
+                owner: "规控算法",
+                requester: "全部用户",
+                type: "通过型"
+            }
+        ];
+
+        // ==================== 渲染函数 ====================
+
+        // 渲染状态标签
+        function renderStatus(status) {
+            const statusMap = {
+                'published': { text: '已发布', className: 'published' },
+                'fixing': { text: '修复中', className: 'fixing' }
+            };
+            const s = statusMap[status] || { text: status, className: '' };
+            return `<span class="status-tag ${s.className}">${s.text}</span>`;
+        }
+
+        // 渲染百分比
+        function renderPercentage(accuracy, metricName) {
+            if (accuracy.denominator === 0) {
+                return '<span class="percentage na">N/A</span>';
+            }
+            const percent = ((accuracy.numerator / accuracy.denominator) * 100).toFixed(2);
+            return `<span class="percentage"><span class="numerator clickable" onclick="handlePercentageClick('${metricName}', ${accuracy.numerator}, ${accuracy.denominator})">${percent}%</span> <span class="denominator">(${accuracy.numerator}/${accuracy.denominator})</span></span>`;
+        }
+
+        // 渲染业务类型标签
+        function renderBusinessType(businessType) {
+            const businessMap = {
+                'safety': { text: '安全性', className: 'safety' },
+                'comfort': { text: '舒适度', className: 'comfort' },
+                'efficiency': { text: '效率性', className: 'efficiency' }
+            };
+            const b = businessMap[businessType] || { text: businessType, className: '' };
+            return `<span class="business-tag ${b.className}">${b.text}</span>`;
+        }
+
+        // 渲染操作按钮
+        function renderActions(data) {
+            return `
+                <div class="action-buttons">
+                    <span class="action-btn report" onclick="handleReport('${data.name}')">上报问题</span>
+                    <span class="action-btn history" onclick="handleHistory('${data.name}')">修复记录</span>
+                </div>
+            `;
+        }
+
+        // 渲染表格行
+        function renderTableRow(data) {
+            return `
+                <div class="table-row" data-name="${data.name}" data-desc="${data.desc}" data-type="${data.type}" data-requester="${data.requester}" data-status="${data.status}">
+                    <div class="table-cell cell-name" data-col="name">${data.name}</div>
+                    <div class="table-cell cell-desc" data-col="desc">${data.desc}</div>
+                    <div class="table-cell cell-business" data-col="business">${renderBusinessType(data.businessType)}</div>
+                    <div class="table-cell cell-type" data-col="type">${data.type}</div>
+                    <div class="table-cell cell-status" data-col="status">${renderStatus(data.status)}</div>
+                    <div class="table-cell cell-accuracy" data-col="accuracy">${renderPercentage(data.accuracy, data.name)}</div>
+                    <div class="table-cell cell-recall" data-col="recall">${renderPercentage(data.recall, data.name)}</div>
+                    <div class="table-cell cell-mirror" data-col="mirror">${data.mirror}</div>
+                    <div class="table-cell cell-time" data-col="time">${data.time}</div>
+                    <div class="table-cell cell-owner" data-col="owner">${data.owner}</div>
+                    <div class="table-cell cell-requester" data-col="requester">${data.requester}</div>
+                    <div class="table-cell cell-actions" data-col="actions">${renderActions(data)}</div>
+                </div>
+            `;
+        }
+
+        // 渲染表格
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            if (data.length === 0) {
+                tableBody.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="8" stroke="currentColor" stroke-width="2"/>
+                            <path d="M42 42L32 32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <p>未找到匹配的评价指标</p>
+                    </div>
+                `;
+                return;
+            }
+            tableBody.innerHTML = data.map(renderTableRow).join('');
+        }
+
+        // ==================== 初始化 ====================
+
+        // 初始渲染表格
+        renderTable(metricsData);
+
+        // ==================== 筛选功能 ====================
+        const filterName = document.getElementById('filterName');
+        const filterDesc = document.getElementById('filterDesc');
+        const filterBusinessType = document.getElementById('filterBusinessType');
+        const filterType = document.getElementById('filterType');
+
+        function applyFilters() {
+            const nameQuery = filterName.value.toLowerCase().trim();
+            const descQuery = filterDesc.value.toLowerCase().trim();
+            const businessTypeQuery = filterBusinessType.value.toLowerCase().trim();
+            const typeQuery = filterType.value.toLowerCase().trim();
+
+            // 如果所有筛选框都为空，显示全部数据
+            if (!nameQuery && !descQuery && !businessTypeQuery && !typeQuery) {
+                renderTable(metricsData);
+                return;
+            }
+
+            const filtered = metricsData.filter(item => {
+                const matchName = !nameQuery || item.name.toLowerCase().includes(nameQuery);
+                const matchDesc = !descQuery || item.desc.toLowerCase().includes(descQuery);
+                const matchBusinessType = !businessTypeQuery ||
+                    (item.businessType === 'safety' && businessTypeQuery.includes('安全')) ||
+                    (item.businessType === 'comfort' && businessTypeQuery.includes('舒适')) ||
+                    (item.businessType === 'efficiency' && businessTypeQuery.includes('效率'));
+                const matchType = !typeQuery || item.type.toLowerCase().includes(typeQuery);
+                return matchName && matchDesc && matchBusinessType && matchType;
+            });
+
+            renderTable(filtered);
+        }
+
+        // 绑定筛选事件
+        filterName.addEventListener('input', applyFilters);
+        filterDesc.addEventListener('input', applyFilters);
+        filterBusinessType.addEventListener('input', applyFilters);
+        filterType.addEventListener('input', applyFilters);
+
+        // ==================== 侧边栏交互 ====================
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const expandIcon = this.querySelector('.menu-item-expand');
+                if (expandIcon && !expandIcon.classList.contains('blue')) {
+                    expandIcon.classList.toggle('expanded');
+                }
+            });
+        });
+
+        document.querySelectorAll('.submenu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.submenu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // ==================== 分页交互 ====================
+        document.querySelectorAll('.pagination-item button').forEach(btn => {
+            btn.parentElement.addEventListener('click', function() {
+                if (!this.classList.contains('active')) {
+                    document.querySelectorAll('.pagination-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // ==================== 操作按钮处理 ====================
+        // 百分比点击
+        function handlePercentageClick(metricName, numerator, denominator) {
+            alert(`${metricName}\n\n准确率详情：\n通过: ${numerator}\n总数: ${denominator}\n\n此功能将跳转到详细验证报告`);
+        }
+
+        // ==================== Modal 交互 ====================
+        const reportModal = document.getElementById('reportModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalCancel = document.getElementById('modalCancel');
+        const modalConfirm = document.getElementById('modalConfirm');
+        const modalMetricName = document.getElementById('modalMetricName');
+        const problemDescription = document.getElementById('problemDescription');
+        const problemLink = document.getElementById('problemLink');
+
+        // 打开弹窗
+        function handleReport(metricName) {
+            modalMetricName.textContent = metricName;
+            problemDescription.value = '';
+            problemLink.value = '';
+            reportModal.classList.add('active');
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            reportModal.classList.remove('active');
+            problemDescription.value = '';
+            problemLink.value = '';
+        }
+
+        // 点击关闭图标
+        modalClose.addEventListener('click', closeModal);
+
+        // 点击取消按钮
+        modalCancel.addEventListener('click', closeModal);
+
+        // 点击遮罩层关闭
+        reportModal.addEventListener('click', function(e) {
+            if (e.target === reportModal) {
+                closeModal();
+            }
+        });
+
+        // 点击确定按钮
+        modalConfirm.addEventListener('click', function() {
+            const description = problemDescription.value.trim();
+            const link = problemLink.value.trim();
+
+            if (!description) {
+                alert('请输入问题描述');
+                return;
+            }
+
+            // 这里可以添加实际的提交逻辑
+            console.log('提交问题:', {
+                metricName: modalMetricName.textContent,
+                description: description,
+                link: link
+            });
+
+            alert('问题已上报');
+            closeModal();
+        });
+
+        // ESC 键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && reportModal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // 修复记录 - 跳转到独立页面
+        function handleHistory(metricName) {
+            // 将指标名称作为参数传递
+            const url = `fix-records.html?metric=${encodeURIComponent(metricName)}`;
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

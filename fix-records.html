@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修复记录 - 评价指标</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* 颜色变量 - 严格按照设计稿 */
+            --color-azure-13: #071f3d;
+            --color-azure-13-80: rgba(7, 31, 61, 0.8);
+            --color-azure-54: #1677FF;
+            --color-white: #FFFFFF;
+            --color-grey-94: #F0F0F0;
+            --color-grey-95: #E6F4FF;
+            --color-grey-96: #F5F5F5;
+            --color-grey-98: #FAFAFA;
+            --color-black-88: rgba(0, 0, 0, 0.88);
+            --color-black-45: rgba(0, 0, 0, 0.45);
+            --color-black-25: rgba(0, 0, 0, 0.25);
+            --color-black-6: rgba(5, 5, 5, 0.06);
+            --color-black-2: rgba(0, 0, 0, 0.02);
+            --color-green-44: #52C41A;
+            --color-green-light: #F6FFED;
+            --color-yellow-44: #FAAD14;
+            --color-yellow-light: #FFFBE6;
+            --color-grey-85: #D9D9D9;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 14px;
+            color: var(--color-black-88);
+            background: var(--color-grey-96);
+            overflow: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(90deg, var(--color-grey-96) 0%, var(--color-grey-96) 100%),
+                        linear-gradient(90deg, var(--color-white) 0%, var(--color-white) 100%);
+        }
+
+        /* ==================== Header ==================== */
+        .header {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 8.4vh;
+            min-height: 56px;
+            background: linear-gradient(180deg, var(--color-azure-13) 0%, var(--color-azure-13-80) 100%);
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo {
+            position: absolute;
+            left: 1.1vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5.8vw;
+            max-width: 85px;
+            height: auto;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title {
+            position: absolute;
+            left: 8vw;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 1.1vw;
+            min-size: 16px;
+            font-weight: 400;
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .header-release-note {
+            position: absolute;
+            right: 10vw;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .header-release-note svg {
+            width: 1.1vw;
+            min-width: 16px;
+            height: 1.1vw;
+            min-height: 16px;
+        }
+
+        .header-release-note span {
+            margin-left: 1.1vw;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1vw;
+            min-size: 16px;
+            font-weight: 400;
+            color: var(--color-azure-54);
+        }
+
+        .header-user {
+            position: absolute;
+            right: 4vw;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 1.1vw;
+            min-size: 16px;
+            font-weight: 400;
+            color: var(--color-white);
+        }
+
+        .header-dropdown {
+            position: absolute;
+            right: 2vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.1vw;
+            min-width: 16px;
+            height: 1.1vw;
+            min-height: 16px;
+        }
+
+        .header-dropdown img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ==================== Background ==================== */
+        .background {
+            position: absolute;
+            left: 0;
+            top: 8.4vh;
+            min-top: 56px;
+            width: 100%;
+            height: calc(100% - 8.4vh);
+            min-height: calc(100% - 56px);
+        }
+
+        /* ==================== Aside ==================== */
+        .aside {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 13.6vw;
+            max-width: 200px;
+            height: 100%;
+            background: var(--color-grey-94);
+        }
+
+        .menu-container {
+            position: absolute;
+            left: 0;
+            top: 1.3vh;
+            width: 100%;
+            height: calc(100% - 1.3vh - 10vh);
+            background: var(--color-white);
+            border-right: 1px solid var(--color-black-6);
+        }
+
+        .menu-item {
+            position: absolute;
+            left: 0.3vw;
+            width: calc(100% - 0.6vw);
+            height: 6vh;
+            min-height: 40px;
+            border-radius: 0.5vw;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .menu-item:hover {
+            background: var(--color-black-2);
+        }
+
+        .menu-item-icon {
+            position: absolute;
+            left: 1.6vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0.95vw;
+            min-width: 14px;
+            height: 0.95vw;
+            min-height: 14px;
+        }
+
+        .menu-item-icon img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .menu-item-text {
+            position: absolute;
+            left: 3.3vw;
+            height: 6vh;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95vw;
+            min-size: 14px;
+            color: var(--color-black-88);
+        }
+
+        .menu-item-expand {
+            position: absolute;
+            right: 1.1vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0.8vw;
+            min-width: 12px;
+            height: 0.8vw;
+            min-height: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-item-expand::before,
+        .menu-item-expand::after {
+            content: '';
+            position: absolute;
+            width: 0.4vw;
+            min-width: 6px;
+            height: 0.1vw;
+            min-height: 1.5px;
+            background: var(--color-black-88);
+            border-radius: 6px;
+        }
+
+        .menu-item-expand::before {
+            transform: rotate(-45deg);
+        }
+
+        .menu-item-expand::after {
+            transform: rotate(45deg);
+        }
+
+        .menu-item-expand.expanded::before {
+            transform: rotate(45deg);
+        }
+
+        .menu-item-expand.expanded::after {
+            transform: rotate(-45deg);
+        }
+
+        .menu-item-expand.blue::before,
+        .menu-item-expand.blue::after {
+            background: var(--color-azure-54);
+        }
+
+        .badge {
+            position: absolute;
+            right: 1.1vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0.4vw;
+            min-width: 6px;
+            height: 0.4vw;
+            min-height: 6px;
+            background: var(--color-green-44);
+            border-radius: 3px;
+        }
+
+        /* 子菜单区域 */
+        .submenu-container {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background: var(--color-black-2);
+        }
+
+        .submenu-item {
+            position: absolute;
+            left: 0.3vw;
+            width: calc(100% - 0.6vw);
+            height: 6vh;
+            min-height: 40px;
+            border-radius: 0.5vw;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .submenu-item-text {
+            position: absolute;
+            left: 3.3vw;
+            height: 6vh;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95vw;
+            min-size: 14px;
+        }
+
+        .submenu-item.active {
+            background: var(--color-grey-95);
+        }
+
+        .submenu-item.active .submenu-item-text {
+            color: var(--color-azure-54);
+        }
+
+        /* 折叠按钮 */
+        .collapse-btn {
+            position: absolute;
+            left: 8.5vw;
+            bottom: 1.5vh;
+            width: 4.3vw;
+            height: 4.3vw;
+            min-width: 64px;
+            min-height: 64px;
+            border: 1px solid transparent;
+            border-radius: 0.4vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .collapse-btn:hover {
+            border-color: var(--color-black-25);
+        }
+
+        .collapse-btn svg {
+            width: 1.1vw;
+            min-width: 16px;
+            height: 1.1vw;
+            min-height: 16px;
+        }
+
+        /* ==================== Main ==================== */
+        .main {
+            position: absolute;
+            left: 13.6vw;
+            max-left: 200px;
+            top: 0;
+            width: calc(100% - 13.6vw);
+            max-width: calc(100% - 200px);
+            height: 100%;
+        }
+
+        /* 面包屑 */
+        .breadcrumb {
+            position: absolute;
+            left: 1.4vw;
+            top: 3vh;
+            height: 3.3vh;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .breadcrumb-item {
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            line-height: 3.3vh;
+        }
+
+        .breadcrumb-item.clickable {
+            color: var(--color-azure-54);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.clickable:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-item:first-child,
+        .breadcrumb-item:nth-child(3) {
+            color: var(--color-black-45);
+        }
+
+        .breadcrumb-separator {
+            font-family: 'Roboto', sans-serif;
+            font-size: 13.3px;
+            color: var(--color-black-45);
+            margin: 0 0.68px;
+        }
+
+        .breadcrumb-item:last-child {
+            color: var(--color-black-88);
+        }
+
+        /* ==================== 指标信息栏 ==================== */
+        .info-bar {
+            position: absolute;
+            left: 1.4vw;
+            top: 8.7vh;
+            width: calc(100% - 2.8vw);
+            height: 8.4vh;
+            min-height: 56px;
+            background: var(--color-white);
+            border-radius: 0.5vw 0.5vw 0 0;
+            display: flex;
+            align-items: center;
+            padding: 0 1.4vw;
+            gap: 1.1vw;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.4vw;
+            padding: 0.5vw 1.1vw;
+            height: 4.8vh;
+            min-height: 32px;
+            border: 1px solid var(--color-grey-85);
+            border-radius: 0.4vw;
+            background: var(--color-white);
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            color: var(--color-black-88);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            border-color: var(--color-azure-54);
+            color: var(--color-azure-54);
+        }
+
+        .back-btn svg {
+            width: 0.95vw;
+            min-width: 14px;
+            height: 0.95vw;
+            min-height: 14px;
+        }
+
+        .metric-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3vh;
+        }
+
+        .metric-info-label {
+            font-size: 0.85vw;
+            min-size: 12px;
+            color: var(--color-black-45);
+        }
+
+        .metric-info-name {
+            font-size: 1.1vw;
+            min-size: 16px;
+            font-weight: 600;
+            color: var(--color-black-88);
+        }
+
+        /* ==================== 表格容器 ==================== */
+        .table-container {
+            position: absolute;
+            left: 1.4vw;
+            top: 17.1vh;
+            width: calc(100% - 2.8vw);
+            height: calc(100% - 17.1vh - 4.8vh);
+            background: var(--color-white);
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        .table-wrapper {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        /* 表头 */
+        .table-header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 8.2vh;
+            min-height: 55px;
+            display: flex;
+            background: var(--color-grey-98);
+            z-index: 10;
+        }
+
+        .table-header-cell {
+            height: 8.2vh;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            padding-left: 1.1vw;
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            font-weight: 600;
+            color: var(--color-black-88);
+            border-bottom: 1px solid var(--color-grey-94);
+            border-right: 1px solid var(--color-grey-94);
+            flex-shrink: 0;
+        }
+
+        .table-header-cell:last-child {
+            border-right: none;
+        }
+
+        /* 列宽设置 */
+        .col-problem { width: 18%; }
+        .col-link { width: 14%; }
+        .col-report-time { width: 11%; }
+        .col-reporter { width: 9%; }
+        .col-status { width: 9%; }
+        .col-feedback { width: 15%; }
+        .col-fix-time { width: 11%; }
+        .col-handler { width: 13%; }
+
+        /* 表体 */
+        .table-body {
+            width: 100%;
+        }
+
+        .table-row {
+            display: flex;
+            width: 100%;
+            border-bottom: 1px solid var(--color-grey-94);
+            transition: background 0.2s;
+        }
+
+        .table-row:hover {
+            background: var(--color-black-2);
+        }
+
+        .table-cell {
+            display: flex;
+            align-items: center;
+            padding: 1.1vw;
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.95vw;
+            min-size: 14px;
+            color: var(--color-black-88);
+            line-height: 3.3vh;
+            border-right: 1px solid var(--color-grey-94);
+            flex-shrink: 0;
+        }
+
+        .table-cell:last-child {
+            border-right: none;
+        }
+
+        /* 列宽设置 - 数据单元格 */
+        .cell-problem { width: 18%; }
+        .cell-link { width: 14%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .cell-report-time { width: 11%; font-family: 'Roboto', sans-serif; }
+        .cell-reporter { width: 9%; }
+        .cell-status { width: 9%; }
+        .cell-feedback { width: 15%; }
+        .cell-fix-time { width: 11%; font-family: 'Roboto', sans-serif; }
+        .cell-handler { width: 13%; }
+
+        /* 链接样式 */
+        .cell-link a {
+            color: var(--color-azure-54);
+            text-decoration: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+            max-width: 100%;
+        }
+
+        .cell-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* 问题类型标签 */
+        .type-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .type-tag.bug {
+            background: #FFF1F0;
+            color: #FF4D4F;
+            border: 1px solid #FF4D4F;
+        }
+
+        .type-tag.optimize {
+            background: var(--color-grey-95);
+            color: var(--color-azure-54);
+            border: 1px solid var(--color-azure-54);
+        }
+
+        .type-tag.feature {
+            background: var(--color-green-light);
+            color: var(--color-green-44);
+            border: 1px solid var(--color-green-44);
+        }
+
+        /* 修复状态标签 */
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-tag.pending {
+            background: #FFF1F0;
+            color: #FF4D4F;
+            border: 1px solid #FF4D4F;
+        }
+
+        .status-tag.fixing {
+            background: var(--color-yellow-light);
+            color: var(--color-yellow-44);
+            border: 1px solid var(--color-yellow-44);
+        }
+
+        .status-tag.completed {
+            background: var(--color-green-light);
+            color: var(--color-green-44);
+            border: 1px solid var(--color-green-44);
+        }
+
+        /* 操作按钮 */
+        .action-btn {
+            padding: 0.4vw 1.1vw;
+            height: 4.8vh;
+            min-height: 32px;
+            border: 1px solid var(--color-azure-54);
+            border-radius: 0.4vw;
+            background: var(--color-white);
+            font-family: 'PingFang SC', sans-serif;
+            font-size: 0.9vw;
+            min-size: 13px;
+            color: var(--color-azure-54);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--color-azure-54);
+            color: var(--color-white);
+        }
+
+        /* 空状态 */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--color-black-45);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* 图标 SVG 内联 */
+        .icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-logo">
+                <svg viewBox="0 0 85 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="85" height="28" rx="4" fill="#1677FF"/>
+                    <text x="10" y="20" font-family="PingFang SC" font-size="14" font-weight="600" fill="white">PGSIM</text>
+                </svg>
+            </div>
+            <div class="header-title">仿真平台</div>
+            <div class="header-release-note">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 2C6.34315 2 5 3.34315 5 5V8H4C3.44772 8 3 8.44772 3 9V13C3 13.5523 3.44772 14 4 14H12C12.5523 14 13 13.5523 13 13V9C13 8.44772 12.5523 8 12 8H11V5C11 3.34315 9.65685 2 8 2ZM7 5C7 4.44772 7.44772 4 8 4C8.55228 4 9 4.44772 9 5V8H7V5Z" fill="white"/>
+                </svg>
+                <span>Release Note</span>
+            </div>
+            <div class="header-user">王艺智</div>
+            <div class="header-dropdown">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6L8 10L12 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Background -->
+        <div class="background">
+            <!-- Aside -->
+            <div class="aside">
+                <div class="menu-container">
+                    <!-- 场景编辑器 -->
+                    <div class="menu-item" style="top: 4px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 2H12V12H2V2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 5H9M5 7H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text">场景编辑器</div>
+                    </div>
+
+                    <!-- 场景管理 (有子菜单) -->
+                    <div class="menu-item" style="top: 48px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="4" height="4" stroke="currentColor" stroke-width="1.5"/>
+                                <rect x="8" y="2" width="4" height="4" stroke="currentColor" stroke-width="1.5"/>
+                                <rect x="2" y="8" width="4" height="4" stroke="currentColor" stroke-width="1.5"/>
+                                <rect x="8" y="8" width="4" height="4" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text">场景管理</div>
+                        <div class="menu-item-expand expanded"></div>
+                    </div>
+
+                    <!-- 单机仿真调试 -->
+                    <div class="menu-item" style="top: 92px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 2L7 12M7 12L4 9M7 12L10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text">单机仿真调试</div>
+                        <div class="badge"></div>
+                    </div>
+
+                    <!-- 仿真任务管理 (有子菜单) -->
+                    <div class="menu-item" style="top: 136px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M5 7H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text">仿真任务管理</div>
+                        <div class="menu-item-expand expanded"></div>
+                    </div>
+
+                    <!-- 评测任务管理 (有子菜单) -->
+                    <div class="menu-item" style="top: 180px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 2L9 5H12L10 8L11 11L8 9L5 11L6 8L4 5H7L7 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text">评测任务管理</div>
+                        <div class="menu-item-expand expanded"></div>
+                    </div>
+
+                    <!-- 配置 (有子菜单，当前展开，蓝色) -->
+                    <div class="menu-item" style="top: 224px;">
+                        <div class="menu-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="7" cy="7" r="5" stroke="#1677FF" stroke-width="1.5"/>
+                                <path d="M7 4V7L9 9" stroke="#1677FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="menu-item-text" style="color: #1677FF;">配置</div>
+                        <div class="menu-item-expand expanded blue"></div>
+                    </div>
+
+                    <!-- 子菜单容器 -->
+                    <div class="submenu-container" style="top: 268px; height: 268px;">
+                        <!-- 评价指标 -->
+                        <div class="submenu-item" style="top: 4px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">评价指标</div>
+                        </div>
+                        <!-- 评测报告模板 -->
+                        <div class="submenu-item" style="top: 48px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">评测报告模板</div>
+                        </div>
+                        <!-- 评测类型配置 -->
+                        <div class="submenu-item" style="top: 92px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">评测类型配置</div>
+                        </div>
+                        <!-- 标签 -->
+                        <div class="submenu-item" style="top: 136px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">标签</div>
+                        </div>
+                        <!-- 地图 -->
+                        <div class="submenu-item" style="top: 180px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">地图</div>
+                        </div>
+                        <!-- 场景分类配置 -->
+                        <div class="submenu-item" style="top: 224px;">
+                            <div class="submenu-item-text" style="color: var(--color-black-88);">场景分类配置</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 折叠按钮 -->
+                <div class="collapse-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4H12V12H4V4Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M6 8H10M8 6V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Main -->
+            <div class="main">
+                <!-- 面包屑 -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item clickable" onclick="goBack()">配置</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item clickable" onclick="goBack()">评价指标</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item">修复记录</span>
+                </div>
+
+                <!-- 指标信息栏 -->
+                <div class="info-bar">
+                    <div class="metric-info" style="flex: 1; display: flex; flex-direction: column; gap: 0.3vh; padding-left: 0;">
+                        <span class="metric-info-label">当前查看指标</span>
+                        <span class="metric-info-name" id="currentMetricName">-</span>
+                    </div>
+                </div>
+
+                <!-- 表格容器 -->
+                <div class="table-container">
+                    <div class="table-wrapper">
+                        <!-- 表头 -->
+                        <div class="table-header">
+                            <div class="table-header-cell col-problem">问题描述</div>
+                            <div class="table-header-cell col-link">回放链接</div>
+                            <div class="table-header-cell col-report-time">上报时间</div>
+                            <div class="table-header-cell col-reporter">上报人</div>
+                            <div class="table-header-cell col-status">修复状态</div>
+                            <div class="table-header-cell col-feedback">修复反馈</div>
+                            <div class="table-header-cell col-fix-time">修复时间</div>
+                            <div class="table-header-cell col-handler">修复人</div>
+                        </div>
+
+                        <!-- 表体 -->
+                        <div class="table-body" id="tableBody">
+                            <!-- 数据将由 JavaScript 动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 数据 ====================
+        // 模拟问题上报记录数据
+        const fixRecordsData = {
+            "到达区域（2.0）": [
+                { problem: "区域边界判断不准确，导致进入边缘区域时检测结果不稳定", link: "https://replay.company.com/simulation/12345", reportTime: "2025-01-18 10:25", reporter: "李明", status: "completed", feedback: "已优化边界判断算法，增加容错范围", fixTime: "2025-01-19 14:30", handler: "王艺智" },
+                { problem: "希望支持任意多边形区域，当前只支持矩形区域", link: "https://replay.company.com/simulation/12346", reportTime: "2025-01-10 09:15", reporter: "张伟", status: "completed", feedback: "已完成多边形区域支持，兼容原有矩形配置", fixTime: "2025-01-15 14:32", handler: "王艺智" },
+                { problem: "区域检测性能较差，大量场景时响应缓慢", link: "-", reportTime: "2025-01-08 16:20", reporter: "刘洋", status: "completed", feedback: "优化空间索引算法，性能提升60%", fixTime: "2025-01-10 11:45", handler: "王艺智" }
+            ],
+            "主车碰撞": [
+                { problem: "栅栏碰撞检测阈值设置错误，应该为0.3但实际是0.15", link: "https://replay.company.com/simulation/12347", reportTime: "2025-01-16 16:40", reporter: "陈强", status: "pending", feedback: "-", fixTime: "-", handler: "" },
+                { problem: "障碍物ID过滤功能不生效，配置的ID列表没有生效", link: "https://replay.company.com/simulation/12348", reportTime: "2025-01-12 09:30", reporter: "赵敏", status: "fixing", feedback: "定位到配置解析问题，正在修复", fixTime: "-", handler: "孙磊" }
+            ],
+            "禁行区域检测": [
+                { problem: "边界情况下存在检测遗漏，车辆刚好贴边时未检测到", link: "-", reportTime: "2025-01-10 11:50", reporter: "周杰", status: "completed", feedback: "增加边界容错判断，贴边场景可正常检测", fixTime: "2025-01-12 16:48", handler: "王艺智" }
+            ],
+            "刹车顿挫检测": [
+                { problem: "顿挫检测参数需要优化，当前存在误报", link: "https://replay.company.com/simulation/12349", reportTime: "2025-01-08 13:20", reporter: "吴刚", status: "completed", feedback: "调整加速度阈值算法，减少误报", fixTime: "2025-01-10 11:22", handler: "孙磊" }
+            ],
+            "QA_无效变道": [
+                { problem: "变道检测存在误报，正常变道被判断为无效变道", link: "https://replay.company.com/simulation/12350", reportTime: "2025-01-09 15:30", reporter: "郑华", status: "pending", feedback: "-", fixTime: "-", handler: "" },
+                { problem: "功能需求：需要检测在特定时间段内的无效变道行为", link: "https://replay.company.com/simulation/12351", reportTime: "2025-01-05 10:00", reporter: "冯涛", status: "completed", feedback: "已上线时间窗口配置功能", fixTime: "2025-01-08 13:55", handler: "王艺智" }
+            ],
+            "轻度急刹检测（无豁免）": [
+                { problem: "新增需求：无豁免版本的急刹检测，所有情况都需要检测", link: "https://replay.company.com/simulation/12352", reportTime: "2025-01-03 14:20", reporter: "于海", status: "completed", feedback: "已新增无豁免配置选项", fixTime: "2025-01-05 10:30", handler: "孙磊" }
+            ],
+            "QA_连续变道": [
+                { problem: "时间窗口计算错误，导致连续变道判断不准确", link: "https://replay.company.com/simulation/12353", reportTime: "2025-01-02 10:15", reporter: "袁丽", status: "completed", feedback: "修复时间窗口计算逻辑", fixTime: "2025-01-03 15:42", handler: "王艺智" }
+            ],
+            "QA_提速缓慢": [
+                { problem: "加速度阈值判断逻辑有误，需要修复", link: "https://replay.company.com/simulation/12354", reportTime: "2024-12-28 15:40", reporter: "马超", status: "pending", feedback: "-", fixTime: "-", handler: "" },
+                { problem: "新增需求：检测在时间区间内加速度是否达到0.5m/s", link: "https://replay.company.com/simulation/12355", reportTime: "2024-12-25 11:30", reporter: "林峰", status: "completed", feedback: "已完成加速度阈值检测功能", fixTime: "2024-12-28 09:18", handler: "孙磊" }
+            ],
+            "主车责任碰撞": [
+                { problem: "新增需求：需要判断主车是否为主要责任方", link: "https://replay.company.com/simulation/12356", reportTime: "2024-12-20 14:00", reporter: "高山", status: "completed", feedback: "新增责任判定算法，支持主责判断", fixTime: "2024-12-25 14:20", handler: "王艺智" }
+            ],
+            "QA_车速稳定性": [
+                { problem: "车速误差范围计算错误，导致判断不准确", link: "-", reportTime: "2024-12-20 10:30", reporter: "何平", status: "completed", feedback: "修正误差范围计算公式", fixTime: "2024-12-22 11:05", handler: "孙磊" }
+            ]
+        };
+
+        // ==================== 工具函数 ====================
+
+        // 获取URL参数
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // 渲染问题链接
+        function renderLink(link) {
+            if (!link || link === '-') {
+                return '<span style="color: var(--color-black-45);">-</span>';
+            }
+            return `<a href="${link}" target="_blank" title="${link}">${link}</a>`;
+        }
+
+        // 渲染修复状态标签
+        function renderStatusTag(status) {
+            const statusMap = {
+                'pending': { text: '待处理', className: 'pending' },
+                'fixing': { text: '修复中', className: 'fixing' },
+                'completed': { text: '已完成', className: 'completed' }
+            };
+            const s = statusMap[status] || { text: status, className: 'pending' };
+            return `<span class="status-tag ${s.className}">${s.text}</span>`;
+        }
+
+        // 渲染修复时间
+        function renderFixTime(time) {
+            if (!time || time === '-') {
+                return '<span style="color: var(--color-black-45);">-</span>';
+            }
+            return time;
+        }
+
+        // 渲染表格行
+        function renderTableRow(record) {
+            return `
+                <div class="table-row">
+                    <div class="table-cell cell-problem">${record.problem}</div>
+                    <div class="table-cell cell-link">${renderLink(record.link)}</div>
+                    <div class="table-cell cell-report-time">${record.reportTime}</div>
+                    <div class="table-cell cell-reporter">${record.reporter}</div>
+                    <div class="table-cell cell-status">${renderStatusTag(record.status)}</div>
+                    <div class="table-cell cell-feedback">${record.feedback || '-'}</div>
+                    <div class="table-cell cell-fix-time">${renderFixTime(record.fixTime)}</div>
+                    <div class="table-cell cell-handler">${record.handler || '-'}</div>
+                </div>
+            `;
+        }
+
+        // 渲染表格
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            if (!data || data.length === 0) {
+                tableBody.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="8" width="48" height="48" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M20 32H44M32 20V44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <p>暂无上报记录</p>
+                    </div>
+                `;
+                return;
+            }
+            tableBody.innerHTML = data.map(renderTableRow).join('');
+        }
+
+        // ==================== 初始化 ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取指标名称
+            const metricName = getUrlParam('metric');
+            const currentMetricName = document.getElementById('currentMetricName');
+
+            if (metricName) {
+                currentMetricName.textContent = metricName;
+                const records = fixRecordsData[metricName] || [];
+                renderTable(records);
+            } else {
+                currentMetricName.textContent = '未知指标';
+                renderTable([]);
+            }
+        });
+
+        // ==================== 侧边栏交互 ====================
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const expandIcon = this.querySelector('.menu-item-expand');
+                if (expandIcon && !expandIcon.classList.contains('blue')) {
+                    expandIcon.classList.toggle('expanded');
+                }
+            });
+        });
+
+        document.querySelectorAll('.submenu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.submenu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
